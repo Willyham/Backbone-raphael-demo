@@ -33,16 +33,18 @@ require.config({
 require([
     'backbone',
     'raphael',
+    'Models/Shape',
     'Collections/Shapes',
     'Views/PaperView',
     'Views/ShapeView',
-    'Models/Shape',
+    'Views/ToolboxView',
     'backbone.raphael',
     'backbone.transformable'
-], function (Backbone, Raphael, Shapes, PaperView, ShapeView, Shape) {
+], function (Backbone, Raphael, Shape, Shapes, PaperView, ShapeView, ToolboxView) {
 
     var paperView = new PaperView();
     var paper = paperView.getPaper();
+    var $paperContainer = $('#paperContainer');
 
     function getInitialShapes(){
         return [
@@ -73,6 +75,11 @@ require([
                 shape.save();
             });
         }
+
+        var tbv = new ToolboxView({
+            collection: shapes
+        });
+        $paperContainer.prepend(tbv.render());
 
         shapes.forEach(function(shape){
             // Create a new instance of the view, and render
