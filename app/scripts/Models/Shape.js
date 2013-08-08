@@ -1,7 +1,8 @@
-/**
- * Created with JetBrains PhpStorm.
- * User: willy
- * Date: 07/08/13
- * Time: 23:28
- * To change this template use File | Settings | File Templates.
- */
+define([
+    'backbone',
+    'backbone.transformable'], function(Backbone){
+    var Shape = Backbone.RaphaelTransformableModel.extend({
+        type: 'rectangle'
+    });
+    return Shape;
+});

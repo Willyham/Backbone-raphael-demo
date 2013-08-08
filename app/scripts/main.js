@@ -20,6 +20,7 @@ require.config({
         underscore: '../bower_components/underscore/underscore',
         eve:          '../bower_components/raphael-amd/eve.0.3.4',
         raphael:      '../bower_components/raphael-amd/raphael.2.1.0.amd',
+        localstorage: '../bower_components/backbone.localStorage/backbone.localStorage',
         'raphael.core': '../bower_components/raphael-amd/raphael.2.1.0.core',
         'raphael.svg':  '../bower_components/raphael-amd/raphael.2.1.0.svg',
         'raphael.vml':  '../bower_components/raphael-amd/raphael.2.1.0.vml',
@@ -32,57 +33,52 @@ require.config({
 require([
     'backbone',
     'raphael',
-    'raphael.freeTransform',
+    'Collections/Shapes',
+    'Views/PaperView',
+    'Views/ShapeView',
+    'Models/Shape',
     'backbone.raphael',
-    'backbone.transformable',
-], function (Backbone, Raphael) {
-    // Create a raphael instance
+    'backbone.transformable'
+], function (Backbone, Raphael, Shapes, PaperView, ShapeView, Shape) {
 
-    var $paper = $('#paper');
+    var paperView = new PaperView();
+    var paper = paperView.getPaper();
 
-    var paper = Raphael($paper.get(0), $paper.width(), $paper.height());
+    function getInitialShapes(){
+        return [
+            new Shape({
+                x: 100,
+                y: 100,
+                width: 50,
+                height: 50,
+                type: 'rectangle'
+            }),
+            new Shape({
+                x: 200,
+                y: 200,
+                width: 50,
+                height: 50,
+                type: 'circle'
+            })
+        ];
+    }
 
-    // Create a Backbone RaphaelView
-    var RectangleView = Backbone.RaphaelTransformableView.extend({
+    var shapes = new Shapes();
+    var loadShapes = shapes.fetch();
+    loadShapes.done(function(){
 
-        events: {
-            'click' : 'changeColour'
-        },
-
-        initialize: function(){
-            if(!this.model){
-                throw new Error('Model needed to create RaphaelTransformableView');
-            }
-            if(!this.options.paper){
-                throw new Error('Paper needed to create RaphaelTransformableView');
-            }
-        },
-
-        render: function(){
-            var rect = this.options.paper.rect(this.model.get('x'), this.model.get('y'), this.model.get('width'),this.model.get('height'));
-            this.initElement(rect);
-        },
-
-        changeColour: function(){
-            var colour = '#' + Math.random().toString(16).substring(2,8);
-            // Setting attributes on the model automatically changes the SVG
-            this.model.set('fill', colour);
+        if(shapes.isEmpty()){
+            shapes.reset(getInitialShapes());
         }
 
+        shapes.forEach(function(shape){
+            // Create a new instance of the view, and render
+            new ShapeView({
+                paper: paper,
+                model: shape,
+                // Transforming the shape will save the model by default, so set this to false if you don't define a model url.
+                saveOnChange: true
+            }).render();
+        });
     });
-
-    var mySquare = new Backbone.RaphaelTransformableModel({
-        x: 100,
-        y: 100,
-        width: 50,
-        height: 50
-    });
-
-    // Create a new instance of the view, and render
-    new RectangleView({
-        paper: paper,
-        model: mySquare,
-        // Transforming the shape will save the model by default, so set this to false if you don't define a model url.
-        saveOnChange: true
-    }).render();
 });
