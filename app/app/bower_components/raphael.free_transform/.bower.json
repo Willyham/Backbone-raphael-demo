@@ -1,0 +1,12 @@
+{
+  "name": "raphael.free_transform",
+  "homepage": "https://github.com/ElbertF/Raphael.FreeTransform",
+  "_release": "226d12b236",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "226d12b2368022a89bf55aaead7f72d01f5246a6"
+  },
+  "_source": "git://github.com/ElbertF/Raphael.FreeTransform.git",
+  "_target": "*"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "backbone.raphael.transformable",
+  "version": "0.2.0",
+  "main": "backbone.raphael.transformable.js",
+  "dependencies": {
+    "requirejs": "~2.1.8",
+    "jquery": "~2.0.3",
+    "raphael": "~2.1.0",
+    "backbone.raphael-amd": "~1.1.0",
+    "raphael.free_transform": "*"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/Willyham/backbone.raphael.transformable",
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.0",
+    "commit": "13cc44683a4df530d3c383eaf82852443cc1c96b"
+  },
+  "_source": "git://github.com/Willyham/backbone.raphael.transformable.git",
+  "_target": "~0.2.0",
+  "_direct": true
+}
