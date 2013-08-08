@@ -69,6 +69,9 @@ require([
 
         if(shapes.isEmpty()){
             shapes.reset(getInitialShapes());
+            shapes.forEach(function(shape){
+                shape.save();
+            });
         }
 
         shapes.forEach(function(shape){
@@ -76,7 +79,6 @@ require([
             new ShapeView({
                 paper: paper,
                 model: shape,
-                // Transforming the shape will save the model by default, so set this to false if you don't define a model url.
                 saveOnChange: true
             }).render();
         });
