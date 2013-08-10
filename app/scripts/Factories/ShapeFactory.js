@@ -1,22 +1,11 @@
 define(['Models/Shape'], function(Shape){
     return {
         getInitialShapes: function(){
-            return [
-                new Shape({
-                    x: 100,
-                    y: 100,
-                    width: 50,
-                    height: 50,
-                    type: 'rectangle'
-                }),
-                new Shape({
-                    x: 200,
-                    y: 200,
-                    width: 50,
-                    height: 50,
-                    type: 'circle'
-                })
-            ];
+            var shapes = [];
+            _(3).times(_.bind(function(){
+                shapes.push(this.getRandomShape());
+            }, this));
+            return shapes;
         },
 
         getShape: function(x,y,w,h){
@@ -43,7 +32,7 @@ define(['Models/Shape'], function(Shape){
         getRandomShape: function(){
             var x = _.random(100,500);
             var y = _.random(100,500);
-            var w = _.random(5,50);
+            var w = _.random(50,150);
             return Boolean(_.random(0,1)) ? this.getSquare(x,y,w) : this.getCircle(x,y,w);
         }
     }
