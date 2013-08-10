@@ -1,8 +1,21 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: willy
- * Date: 10/08/13
- * Time: 14:11
- * To change this template use File | Settings | File Templates.
- */
+$page = <<<test
+define([
+    'backbone',
+    'backbone.transformable'], function(Backbone){
+    var Shape = Backbone.RaphaelTransformableModel.extend({
+        type: 'rectangle'
+    });
+    return Shape;
+});
+test;
+
+
+$testFile = array('id' => 1, 'code' => $page);
+$testFile2 = array('id' => 2, 'code' => 'def');
+
+$sources = array($testFile,$testFile2);
+
+//echo 'Content-Type: text/json';
+echo json_encode($sources);
+
