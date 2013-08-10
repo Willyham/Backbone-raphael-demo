@@ -33,44 +33,25 @@ require.config({
 require([
     'backbone',
     'raphael',
-    'Models/Shape',
     'Collections/Shapes',
     'Views/PaperView',
     'Views/ShapeView',
     'Views/ToolboxView',
+    'Factories/ShapeFactory',
     'backbone.raphael',
     'backbone.transformable'
-], function (Backbone, Raphael, Shape, Shapes, PaperView, ShapeView, ToolboxView) {
-
-    var paperView = new PaperView();
-    var paper = paperView.getPaper();
-    var $paperContainer = $('#paperContainer');
-
-    function getInitialShapes(){
-        return [
-            new Shape({
-                x: 100,
-                y: 100,
-                width: 50,
-                height: 50,
-                type: 'rectangle'
-            }),
-            new Shape({
-                x: 200,
-                y: 200,
-                width: 50,
-                height: 50,
-                type: 'circle'
-            })
-        ];
-    }
+], function (Backbone, Raphael, Shapes, PaperView, ShapeView, ToolboxView, ShapeFactory) {
 
     var shapes = new Shapes();
+    var paperView = new PaperView({
+        collection: shapes
+    });
+
     var loadShapes = shapes.fetch();
     loadShapes.done(function(){
 
         if(shapes.isEmpty()){
-            shapes.reset(getInitialShapes());
+            shapes.reset(ShapeFactory.getInitialShapes());
             shapes.forEach(function(shape){
                 shape.save();
             });
@@ -79,15 +60,8 @@ require([
         var tbv = new ToolboxView({
             collection: shapes
         });
-        $paperContainer.prepend(tbv.render());
 
-        shapes.forEach(function(shape){
-            // Create a new instance of the view, and render
-            new ShapeView({
-                paper: paper,
-                model: shape,
-                saveOnChange: true
-            }).render();
-        });
+        var $paperContainer = $('#paperContainer');
+        $paperContainer.prepend(tbv.render());
     });
 });

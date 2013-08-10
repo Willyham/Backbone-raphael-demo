@@ -7,10 +7,6 @@ define([
 
     var ShapeView = Backbone.RaphaelTransformableView.extend({
 
-        events: {
-            'click' : 'changeColour'
-        },
-
         initialize: function(){
             if(!this.model){
                 throw new Error('Shape needed to create ShapeView');
@@ -33,12 +29,6 @@ define([
             this.initElement(element, {
                 keepRatio: [ 'axisX', 'axisY', 'bboxCorners', 'bboxSides' ]
             });
-        },
-
-        changeColour: function(){
-            var colour = '#' + Math.random().toString(16).substring(2,8);
-            // Setting attributes on the model automatically changes the SVG
-            this.model.set('fill', colour);
         }
     });
     return ShapeView;
