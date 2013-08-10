@@ -31,16 +31,23 @@ require.config({
 });
 
 require([
+    'jquery',
     'backbone',
     'raphael',
+    'Routers/AppRouter',
     'Collections/Shapes',
+    'Collections/SourceFiles',
     'Views/PaperView',
     'Views/ShapeView',
     'Views/ToolboxView',
+    'Views/SourceView',
     'Factories/ShapeFactory',
     'backbone.raphael',
     'backbone.transformable'
-], function (Backbone, Raphael, Shapes, PaperView, ShapeView, ToolboxView, ShapeFactory) {
+], function ($, Backbone, Raphael, AppRouter, Shapes, SourceFiles, PaperView, ShapeView, ToolboxView, SourceView, ShapeFactory) {
+
+    var sources = new SourceFiles();
+    var loadSources = sources.fetch();
 
     var shapes = new Shapes();
     var paperView = new PaperView({
@@ -48,7 +55,13 @@ require([
     });
 
     var loadShapes = shapes.fetch();
-    loadShapes.done(function(){
+
+    $.when(loadShapes, loadSources).then(function(){
+
+        var sourceView = new SourceView();
+        $('#codeContainer').html(sourceView.render());
+
+        var appRouter = new AppRouter(sources,sourceView);
 
         if(shapes.isEmpty()){
             shapes.reset(ShapeFactory.getInitialShapes());
@@ -63,5 +76,7 @@ require([
 
         var $paperContainer = $('#paperContainer');
         $paperContainer.prepend(tbv.render());
+
+        Backbone.history.start();
     });
 });

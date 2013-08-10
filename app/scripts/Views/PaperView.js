@@ -11,6 +11,11 @@ define([
         initialize: function(){
             this._paper = Raphael(this.el, this.$el.width(), this.$el.height());
             this.listenTo(this.collection, 'add', this.renderShape);
+            this.listenTo(this.collection, 'reset', this.renderShapes);
+        },
+
+        renderShapes: function(shapes){
+            shapes.forEach(_.bind(this.renderShape,this));
         },
 
         renderShape: function(shape){

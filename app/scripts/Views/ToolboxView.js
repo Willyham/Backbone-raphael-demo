@@ -3,12 +3,12 @@ define(['backbone', 'Factories/ShapeFactory'], function(Backbone, ShapeFactory){
     var ToolboxView = Backbone.View.extend({
 
         className: 'toolbox',
-        template: _.template('<div class="toolboxItem add">Add Shape</div><div class="toolboxItem rainbow">Rainbow!</div><div class="toolboxItem clear">Clear All</div>'),
+        template: _.template('<div class="toolboxItem add">Add Shape</div><div class="toolboxItem rainbow">Rainbow!</div><div class="toolboxItem clear">Remove Shape</div>'),
 
         events: {
             'click .rainbow' : 'rainbow',
             'click .add' : 'addShape',
-            'click .clear' : 'clearAll'
+            'click .clear' : 'removeShape'
         },
 
         initialize: function(){
@@ -22,13 +22,15 @@ define(['backbone', 'Factories/ShapeFactory'], function(Backbone, ShapeFactory){
         },
 
         addShape: function(){
-            this.collection.add(ShapeFactory.getRandomShape());
+            var shape = ShapeFactory.getRandomShape();
+            this.collection.add(shape);
+            shape.save();
         },
 
-        clearAll: function(){
-            this.collection.forEach(function(shape){
-                shape.destroy();
-            });
+        removeShape: function(){
+            if(!this.collection.isEmpty()){
+                this.collection.last().destroy();
+            }
         },
 
         rainbow: function(){
