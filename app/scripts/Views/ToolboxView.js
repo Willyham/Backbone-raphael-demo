@@ -3,6 +3,7 @@ define(['backbone', 'Factories/ShapeFactory'], function(Backbone, ShapeFactory){
     var ToolboxView = Backbone.View.extend({
 
         className: 'toolbox',
+        tagName: 'pre',
         template: _.template('<div class="toolboxItem add">Add Shape</div><div class="toolboxItem rainbow">Rainbow!</div><div class="toolboxItem clear">Remove Shape</div>'),
 
         events: {

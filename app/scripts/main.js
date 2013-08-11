@@ -41,10 +41,11 @@ require([
     'Views/ShapeView',
     'Views/ToolboxView',
     'Views/SourceView',
+    'Views/SourceSelectorView',
     'Factories/ShapeFactory',
     'backbone.raphael',
     'backbone.transformable'
-], function ($, Backbone, Raphael, AppRouter, Shapes, SourceFiles, PaperView, ShapeView, ToolboxView, SourceView, ShapeFactory) {
+], function ($, Backbone, Raphael, AppRouter, Shapes, SourceFiles, PaperView, ShapeView, ToolboxView, SourceView, SourceSelectorView, ShapeFactory) {
 
     var sources = new SourceFiles();
     var loadSources = sources.fetch();
@@ -58,11 +59,28 @@ require([
 
     $.when(loadShapes, loadSources).then(function(){
 
+        // Make a new source view
         var sourceView = new SourceView();
         $('#codeContainer').html(sourceView.render());
 
+        // Make the app router
         var appRouter = new AppRouter(sources,sourceView);
 
+        // Build the view to swtich between files
+        var sourceSelectorView = new SourceSelectorView({
+            collection: sources,
+            router: appRouter
+        });
+        $('#switcher').html(sourceSelectorView.render());
+
+        // Create the toolbox
+        var tbv = new ToolboxView({
+            collection: shapes
+        });
+        var $paperContainer = $('#paperContainer');
+        $paperContainer.prepend(tbv.render());
+
+        // Add default shapes
         if(shapes.isEmpty()){
             shapes.reset(ShapeFactory.getInitialShapes());
             shapes.forEach(function(shape){
@@ -70,13 +88,10 @@ require([
             });
         }
 
-        var tbv = new ToolboxView({
-            collection: shapes
-        });
-
-        var $paperContainer = $('#paperContainer');
-        $paperContainer.prepend(tbv.render());
-
+        // Start the history
         Backbone.history.start();
+
+        //Auto navigate to source 0
+        appRouter.navigate('source/0', {trigger:true});
     });
 });
