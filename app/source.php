@@ -20,6 +20,7 @@ $models = array();
 $id = 0;
 foreach($files as $file){
     if( ($code = file_get_contents($file)) !== FALSE){
+        $code = htmlentities($code);
         array_push($models, array('id' => $id, 'name' => $file, 'code' => $code));
         $id++;
     }
