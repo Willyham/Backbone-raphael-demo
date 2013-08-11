@@ -91,7 +91,7 @@ require([
         // Start the history
         Backbone.history.start();
 
-        //Auto navigate to source 0
-        appRouter.navigate('source/0', {trigger:true});
+        //Auto navigate to source 7
+        appRouter.navigate('source/7', {trigger:true});
     });
 });

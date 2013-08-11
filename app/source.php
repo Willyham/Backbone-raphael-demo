@@ -21,6 +21,7 @@ $id = 0;
 foreach($files as $file){
     if( ($code = file_get_contents($file)) !== FALSE){
         $code = htmlentities($code);
+        $code = str_replace('RaphaelTransformableView', '<b>RaphaelTransformableView</b>', $code);
         array_push($models, array('id' => $id, 'name' => $file, 'code' => $code));
         $id++;
     }
