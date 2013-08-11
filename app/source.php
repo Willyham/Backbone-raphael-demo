@@ -8,7 +8,9 @@ function getJSfiles($dir){
     for ($i = 0; $i < count($items); $i++) {
         if (is_dir($items[$i])) {
             $add = glob($items[$i] . '/*.js');
-            $files = array_merge($files, $add);
+            if(is_array($add)){
+                $files = array_merge($files, $add);
+            }
         }
     }
     return $files;
