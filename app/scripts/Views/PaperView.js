@@ -9,7 +9,7 @@ define([
         _paper: null,
 
         initialize: function(){
-            this._paper = Raphael(this.el, this.$el.width(), this.$el.height());
+            this._paper = Raphael(this.el, this.$el.width(), this.$el.height()-50);
             this.listenTo(this.collection, 'add', this.renderShape);
             this.listenTo(this.collection, 'reset', this.renderShapes);
         },

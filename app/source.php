@@ -1,21 +1,29 @@
 <?php
-$page = <<<test
-define([
-    'backbone',
-    'backbone.transformable'], function(Backbone){
-    var Shape = Backbone.RaphaelTransformableModel.extend({
-        type: 'rectangle'
-    });
-    return Shape;
-});
-test;
 
+$scriptDir = 'scripts';
 
-$testFile = array('id' => 1, 'code' => $page);
-$testFile2 = array('id' => 2, 'code' => 'def');
+function getJSfiles($dir){
+    $items = glob($dir . '/*');
+    $files = array();
+    for ($i = 0; $i < count($items); $i++) {
+        if (is_dir($items[$i])) {
+            $add = glob($items[$i] . '/*.js');
+            $files = array_merge($files, $add);
+        }
+    }
+    return $files;
+}
 
-$sources = array($testFile,$testFile2);
+$files = getJSfiles($scriptDir);
 
-//echo 'Content-Type: text/json';
-echo json_encode($sources);
+$models = array();
+$id = 0;
+foreach($files as $file){
+    if( ($code = file_get_contents($file)) !== FALSE){
+        array_push($models, array('id' => $id, 'name' => $file, 'code' => $code));
+        $id++;
+    }
+}
+
+echo json_encode($models);
 
